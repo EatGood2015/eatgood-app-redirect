@@ -2,12 +2,56 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="refresh" content="0;url=https://app.eatgoodco.com/">
-    <title>Redirecting…</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <script>location.replace("https://app.eatgoodco.com/");</script>
+    <title>Open the Eat Good app</title>
+    <meta name="description" content="Redirecting to the Eat Good app store.">
+    <script>
+      // Store URLs
+      const ANDROID_URL = "https://play.google.com/store/apps/details?id=com.splend.eatgoodcomappegy&hl=en";
+      const IOS_URL = "https://apps.apple.com/de/app/eat-good/id6787993739";
+
+      // Basic device detection
+      const ua = navigator.userAgent || navigator.vendor || window.opera;
+      const isAndroid = /android/i.test(ua);
+      const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+
+      // Redirect immediately on mobile devices
+      if (isAndroid && ANDROID_URL) {
+        window.location.replace(ANDROID_URL);
+      } else if (isIOS && IOS_URL) {
+        window.location.replace(IOS_URL);
+      } else {
+        // Otherwise show the fallback landing page
+        window.addEventListener("DOMContentLoaded", () => {
+          const play = document.getElementById("play-link");
+          const ios = document.getElementById("ios-link");
+          play.href = ANDROID_URL;
+          ios.href = IOS_URL;
+          document.getElementById("status").textContent = "Tap a link below to open the app store.";
+        });
+      }
+    </script>
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial; display:flex; align-items:center; justify-content:center; min-height:100vh; margin:0; background:#f7f7f7; color:#111; }
+      .card { max-width:540px; width:94%; background:#fff; padding:28px; border-radius:12px; box-shadow:0 6px 24px rgba(0,0,0,0.08); text-align:center; }
+      h1 { margin:0 0 8px; font-size:20px; }
+      p { margin:0 0 18px; color:#444; }
+      .buttons { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+      .btn { display:inline-block; padding:12px 18px; border-radius:8px; text-decoration:none; color:#fff; font-weight:600; }
+      .android { background:#3DDC84; }
+      .ios { background:#0070C9; }
+      small { display:block; margin-top:14px; color:#888; }
+    </style>
   </head>
   <body>
-    <p>Redirecting to <a href="https://app.eatgoodco.com/">https://app.eatgoodco.com/</a>…</p>
+    <div class="card">
+      <h1>Opening the Eat Good app…</h1>
+      <p id="status">Detecting your device and redirecting you to the correct app store.</p>
+      <div class="buttons" aria-hidden="false">
+        <a id="play-link" class="btn android" href="#" role="link">Get it on Google Play</a>
+        <a id="ios-link" class="btn ios" href="#" role="link">Download on the App Store</a>
+      </div>
+      <small>If you are not redirected automatically, tap the appropriate button above.</small>
+    </div>
   </body>
 </html>
